@@ -47,11 +47,14 @@ function prompt_russtone_elapsed_time {
   fi
 }
 
-function zle-line-init zle-keymap-select {
-  _prompt_russtone_viins="%F{green}➜ %f}"
-  _prompt_russtone_vicmd="%F{yellow}◼︎ %f"
-  _prompt_russtone_vi_mode="${${KEYMAP/vicmd/$_prompt_russtone_vicmd/(main|viins}/$_prompt_russtone_viins}"
+function zle-line-init zle-line-finish zle-keymap-select {
+  if [[ $KEYMAP == 'vicmd' ]]; then
+    _prompt_russtone_editor_mode="%F{yellow}◼︎ %f"
+  else
+    _prompt_russtone_editor_mode="%F{green}➜ %f"
+  fi
   zle reset-prompt
+  zle -R
 }
 
 # Preexec hook
@@ -80,11 +83,12 @@ function prompt_russtone_setup {
   add-zsh-hook precmd prompt_russtone_precmd
   add-zsh-hook preexec prompt_russtone_preexec
   zle -N zle-line-init
+  zle -N zle-line-finish
   zle -N zle-keymap-select
 
   PROMPT='
 ${SSH_TTY:+"%F{red}%n%f%F{white}@%f%F{yellow}%M%f "}%F{blue}${_prompt_russtone_pwd}%f$(git_super_status)
-${_prompt_russtone_vi_mode} '
+${_prompt_russtone_editor_mode} '
 
   RPROMPT='%F{yellow}${_prompt_russtone_elapsed_time}%f'
 
