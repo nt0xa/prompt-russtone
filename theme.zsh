@@ -1,7 +1,3 @@
-
-# Load and execute the prompt theming system.
-autoload -Uz promptinit && promptinit
-
 function prompt_russtone_pwd {
   local pwd="${PWD/#$HOME/~}"
 
