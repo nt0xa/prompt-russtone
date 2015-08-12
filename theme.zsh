@@ -48,7 +48,9 @@ function prompt_russtone_elapsed_time {
 }
 
 function zle-line-init zle-keymap-select {
-  _prompt_russtone_vi_mode="${${KEYMAP/vicmd/%F{yellow}◼︎ %f/(main|viins}/%F{green}➜ %f}"
+  _prompt_russtone_viins="%F{green}➜ %f}"
+  _prompt_russtone_vicmd="%F{yellow}◼︎ %f"
+  _prompt_russtone_vi_mode="${${KEYMAP/vicmd/$_prompt_russtone_vicmd/(main|viins}/$_prompt_russtone_viins}"
   zle reset-prompt
 }
 
