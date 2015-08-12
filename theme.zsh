@@ -87,7 +87,7 @@ function prompt_russtone_setup {
   zle -N zle-keymap-select
 
   PROMPT='
-${SSH_TTY:+"%F{red}%n%f%F{white}@%f%F{yellow}%M%f "}%F{blue}${_prompt_russtone_pwd}%f$(git_super_status)
+${SSH_TTY:+"%F{red}%n%f%F{white}@%f%F{yellow}%M%f "}%F{blue}${_prompt_russtone_pwd}%f $(git_super_status)
 ${_prompt_russtone_editor_mode} '
 
   RPROMPT='%F{yellow}${_prompt_russtone_elapsed_time}%f'
