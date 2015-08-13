@@ -1,10 +1,9 @@
 # turns path like '/home/user/foo/bar/baz' into '~/f/b/baz'
 function prompt_russtone_pwd {
-  local pwd="${PWD/#$HOME/~}"
+  local pwd="${1/#$HOME/~}"
 
   if [[ "$pwd" == "~" ]]; then
-    _prompt_russtone_pwd="~"
-    unset MATCH
+    echo "~"
   else
     # ${(@s:/:)var}  - split var by "/"
     # ${var##pat}    - remove pattern from beginning of var
@@ -14,7 +13,7 @@ function prompt_russtone_pwd {
     # ${PWD:h}       - all except last dir
     # ${PWD:t}       - only last dir
     # ${var//s1/s2}  - replace s1 with s2 in var
-    _prompt_russtone_pwd="${${${${(@j:/:M)${(@s:/:)pwd}##(.|)?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
+    echo "${${${${(@j:/:M)${(@s:/:)pwd}##(.|)?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
   fi
 }
 
@@ -67,7 +66,7 @@ function prompt_russtone_preexec {
 # Precmd hook
 function prompt_russtone_precmd {
   # Format PWD
-  prompt_russtone_pwd
+  _prompt_russtone_pwd=$(prompt_russtone_pwd $PWD)
 
   # Format elapsed time
   prompt_russtone_elapsed_time
