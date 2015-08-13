@@ -70,6 +70,10 @@ function prompt_russtone_precmd {
   # Format elapsed time
   _prompt_russtone_elapsed_time=$(prompt_russtone_elapsed_time $_prompt_russtone_timestamp_start)
   unset _prompt_russtone_timestamp_start
+
+  if (( $+functions[vcs_info] )); then
+    vcs_info
+  fi
 }
 
 # Main
@@ -84,12 +88,20 @@ function prompt_russtone_setup {
   # Add hooks
   add-zsh-hook precmd prompt_russtone_precmd
   add-zsh-hook preexec prompt_russtone_preexec
+
+  # Widgets
   zle -N zle-line-init
   zle -N zle-line-finish
   zle -N zle-keymap-select
 
+  # vsc_info
+  autoload -Uz vcs_info
+  zstyle ':vcs_info:*' enable git svn
+  zstyle ':vcs_info:git*' formats "%F{magenta}(%s:%b)%f"
+  zstyle ':vcs_info:svn*' formats "%F{magenta}(%s:%b)%f"
+
   PROMPT='
-${SSH_TTY:+"%F{red}%n%f%F{white}@%f%F{yellow}%M%f "}%F{blue}${_prompt_russtone_pwd}%f
+${SSH_TTY:+"%F{red}%n%f%F{white}@%f%F{yellow}%M%f "}%F{blue}${_prompt_russtone_pwd}%f ${vcs_info_msg_0_}
 ${_prompt_russtone_editor_mode} '
 
   RPROMPT='%F{yellow}${_prompt_russtone_elapsed_time}%f'
