@@ -36,13 +36,12 @@ function prompt_russtone_human_time {
 # Calc elapsed time and save it to _prompt_russtone_elapsed_time (if > 5s)
 function prompt_russtone_elapsed_time {
   local stop=$(date +%s)
-  local start=${_prompt_russtone_timestamp_start:-$stop}
+  local start=${1:-$stop}
   integer elapsed=$stop-$start
-  unset _prompt_russtone_timestamp_start
   if (( $elapsed > 5 )); then
-    _prompt_russtone_elapsed_time=$(prompt_russtone_human_time $elapsed)
+    echo $(prompt_russtone_human_time $elapsed)
   else
-    _prompt_russtone_elapsed_time=''
+    echo ''
   fi
 }
 
@@ -69,7 +68,8 @@ function prompt_russtone_precmd {
   _prompt_russtone_pwd=$(prompt_russtone_pwd $PWD)
 
   # Format elapsed time
-  prompt_russtone_elapsed_time
+  _prompt_russtone_elapsed_time=$(prompt_russtone_elapsed_time $_prompt_russtone_timestamp_start)
+  unset _prompt_russtone_timestamp_start
 }
 
 # Main
