@@ -97,8 +97,8 @@ function prompt_russtone_setup {
   # vsc_info
   autoload -Uz vcs_info
   zstyle ':vcs_info:*' enable git svn
-  zstyle ':vcs_info:git*' formats "%F{magenta}(%s:%b)%f"
-  zstyle ':vcs_info:svn*' formats "%F{magenta}(%s:%b)%f"
+  zstyle ':vcs_info:git*' formats "%F{magenta}(%b)%f"
+  zstyle ':vcs_info:svn*' formats "%F{magenta}(%b)%f"
 
   PROMPT='
 ${SSH_TTY:+"%F{red}%n%f%F{white}@%f%F{yellow}%M%f "}%F{blue}${_prompt_russtone_pwd}%f ${vcs_info_msg_0_}
