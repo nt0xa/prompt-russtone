@@ -97,7 +97,10 @@ function prompt_russtone_setup {
   # vsc_info
   autoload -Uz vcs_info
   zstyle ':vcs_info:*' enable git svn
-  zstyle ':vcs_info:git*' formats "%F{magenta}(%b)%f"
+  zstyle ':vcs_info:git:*' check-for-changes true
+  zstyle ':vcs_info:git:*' stagedstr "%F{yellow}%B!%b%f"
+  zstyle ':vcs_info:git:*' unstagedstr "%F{red}%B!%b%f"
+  zstyle ':vcs_info:git*' formats "%F{magenta}(%b)%f%u%c"
   zstyle ':vcs_info:svn*' formats "%F{magenta}(%b)%f"
 
   PROMPT='
