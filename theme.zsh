@@ -77,11 +77,11 @@ function prompt_russtone_precmd {
 }
 
 # Git set-message hook
-# Adds '?' to vsc_info untracked (%u) if there are untracked files in repo
+# Adds '!' to vsc_info untracked (%u) if there are untracked files in repo
 function +vi-git-untracked {
   if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
     git status --porcelain | grep '??' &> /dev/null ; then
-    hook_com[unstaged]+='%F{red}%B?%b%f'
+    hook_com[unstaged]='%F{red}%B!%b%f'
   fi
 }
 
@@ -94,8 +94,10 @@ function +vi-git-st() {
 
     ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
     (( $ahead )) && gitstatus+=( "%F{green}▲${ahead}%f" )
+    behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
+    (( $behind )) && gitstatus+=( "%F{green}▼${behind}%f" )
 
-    hook_com[misc]+=$gitstatus
+    hook_com[misc]+=${(j:/:)gitstatus}
 }
 
 # Main
