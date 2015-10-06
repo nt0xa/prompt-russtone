@@ -79,7 +79,7 @@ function prompt_russtone_precmd {
 # Git set-message hook
 # Adds '!' to vsc_info untracked (%u) if there are untracked files in repo
 function +vi-git-untracked {
-  if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+  if [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) == 'true' ]] && \
     git status --porcelain | grep '??' &> /dev/null ; then
     hook_com[unstaged]='%F{red}%B!%b%f'
   fi
