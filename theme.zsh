@@ -87,7 +87,7 @@ function +vi-git-untracked {
 
 
 # Git set-message hook
-# Adds count of ahead/behind commits to vcs_info misc (%m)
+# Adds count of ahead commits to vcs_info misc (%m)
 function +vi-git-st() {
     local ahead
     local -a gitstatus
