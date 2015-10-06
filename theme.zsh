@@ -93,9 +93,9 @@ function +vi-git-st() {
     local -a gitstatus
 
     ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
-    (( $ahead )) && gitstatus+=( "%F{green}▲${ahead}%f" )
+    (( $ahead )) && gitstatus+=( "%F{green}⇡${ahead// /}%f" )
     behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
-    (( $behind )) && gitstatus+=( "%F{green}▼${behind}%f" )
+    (( $behind )) && gitstatus+=( "%F{green}⇣${behind// /}%f" )
 
     hook_com[misc]+=${(j: :)gitstatus}
 }
