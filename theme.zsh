@@ -76,6 +76,31 @@ function prompt_russtone_precmd {
   fi
 }
 
+# Git set-message hook
+# Adds '?' to vsc_info untracked (%u) if there are untracked files in repo
+function +vi-git-untracked {
+  if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+    git status --porcelain | grep '??' &> /dev/null ; then
+    hook_com[unstaged]+='%F{red}%B?%b%f'
+  fi
+}
+
+
+# Git set-message hook
+# Adds count of ahead/behind commits to vcs_info misc (%m)
+function +vi-git-st() {
+    local ahead behind
+    local -a gitstatus
+
+    ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
+    (( $ahead )) && gitstatus+=( "▲${ahead}" )
+
+    behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
+    (( $behind )) && gitstatus+=( "▼${behind}" )
+
+    hook_com[misc]+=${(j:/:)gitstatus}
+}
+
 # Main
 function prompt_russtone_setup {
 
@@ -96,12 +121,14 @@ function prompt_russtone_setup {
 
   # vsc_info
   autoload -Uz vcs_info
-  zstyle ':vcs_info:*' enable git svn
+  zstyle ':vcs_info:*' enable git
   zstyle ':vcs_info:git:*' check-for-changes true
   zstyle ':vcs_info:git:*' stagedstr "%F{yellow}%B!%b%f"
   zstyle ':vcs_info:git:*' unstagedstr "%F{red}%B!%b%f"
-  zstyle ':vcs_info:git*' formats "%F{magenta}(%b)%f%u%c"
-  zstyle ':vcs_info:svn*' formats "%F{magenta}(%b)%f"
+  zstyle ':vcs_info:git*' formats "%F{magenta}(%b)%f%u%c %m"
+  zstyle ':vcs_info:git*+set-message:*' hooks \
+    git-untracked \
+    git-st
 
   PROMPT='
 ${SSH_TTY:+"%F{red}%n%f%F{white}@%f%F{yellow}%M%f "}%F{blue}${_prompt_russtone_pwd}%f ${vcs_info_msg_0_}
