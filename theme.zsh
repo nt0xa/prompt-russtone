@@ -1,19 +1,16 @@
 # turns path like '/home/user/foo/bar/baz' into '~/f/b/baz'
 function prompt_russtone_pwd {
   local pwd="${1/#$HOME/~}"
+  local head tail
 
-  if [[ "$pwd" == "~" ]]; then
-    echo "~"
+  if [[ $pwd == [~/] ]]; then
+    echo $pwd
   else
-    # ${(@s:/:)var}  - split var by "/"
-    # ${var##pat}    - remove pattern from beginning of var
-    # ${(M)var##pat} - remove all except match pat (reversed previous)
-    # ${(@j:/:)arr}  - join arr with separators "/"
-    # ${var%pat}     - remove pat from tail of var
-    # ${PWD:h}       - all except last dir
-    # ${PWD:t}       - only last dir
-    # ${var//s1/s2}  - replace s1 with s2 in var
-    echo "${${${${(@j:/:M)${(@s:/:)pwd}##(.|)?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
+    head="${(@j:/:M)${(@s:/:)${pwd:h}}##.#?}"
+    head=${head//\%/%%}
+    tail=${pwd:t}
+    tail=${tail//\%/%%}
+    echo "$head/$tail"
   fi
 }
 
@@ -105,6 +102,7 @@ function prompt_russtone_setup {
 
   # Expand variables in PROMPT
   setopt PROMPT_SUBST
+  setopt EXTENDED_GLOB
 
   # Load required functions
   autoload -Uz add-zsh-hook
