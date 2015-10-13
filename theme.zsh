@@ -7,6 +7,7 @@ function prompt_russtone_pwd {
     echo $pwd
   else
     head="${(@j:/:M)${(@s:/:)${pwd:h}}##.#?}"
+    head=${head%%/}
     head=${head//\%/%%}
     tail=${pwd:t}
     tail=${tail//\%/%%}
