@@ -45,7 +45,7 @@ function prompt_russtone_elapsed_time {
 
 function zle-line-init zle-line-finish zle-keymap-select {
   if [[ $KEYMAP == 'vicmd' ]]; then
-    _prompt_russtone_editor_mode="%F{yellow}◼︎ %f"
+    _prompt_russtone_editor_mode="%F{yellow}➜ %f"
   else
     _prompt_russtone_editor_mode="%F{green}➜ %f"
   fi
