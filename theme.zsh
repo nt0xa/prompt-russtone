@@ -81,9 +81,9 @@ function +vi-git-st() {
 	local -a gitstatus
 
 	ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
-	(( $ahead )) && gitstatus+=( "%F{green}⇡${ahead// /}%f" )
+	(( $ahead )) && gitstatus+=( " %F{green}⇡${ahead// /}%f" )
 	behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
-	(( $behind )) && gitstatus+=( "%F{green}⇣${behind// /}%f" )
+	(( $behind )) && gitstatus+=( " %F{green}⇣${behind// /}%f" )
 
 	hook_com[misc]+=${(j: :)gitstatus}
 }
@@ -108,7 +108,7 @@ function prompt_russtone_setup {
 	zstyle ':vcs_info:git:*' check-for-changes true
 	zstyle ':vcs_info:git:*' stagedstr "%F{yellow}%B!%b%f"
 	zstyle ':vcs_info:git:*' unstagedstr "%F{red}%B!%b%f"
-	zstyle ':vcs_info:git*' formats "%F{magenta}(%b)%f%u%c %m"
+	zstyle ':vcs_info:git*' formats " %F{magenta}(%b)%f%u%c%m"
 	zstyle ':vcs_info:git*+set-message:*' hooks \
 	                                      git-untracked \
 	                                      git-st
