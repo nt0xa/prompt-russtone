@@ -115,7 +115,7 @@ function prompt_russtone_setup {
 
 	PROMPT='
 %F{blue}${_prompt_russtone_pwd}%f ${vcs_info_msg_0_}
-%F{green}➜ %f '
+%B%F{%(?:green:red)}➜ %F%b '
 
 	RPROMPT='%F{yellow}${_prompt_russtone_elapsed_time}%f'
 
